@@ -5,17 +5,18 @@ from todo_list.funcoes import (
 
 def main():
     tasks = read_tasks()
-    # As opções internas ficam em inglês para a lógica do backend
+    # Estas são as 'chaves' internas do seu programa
     options = ['add', 'list', 'remove', 'exit']
 
     while True:
         clear()
         title('GERENCIADOR DE TAREFAS')
 
-        # A interface que o usuário vê continua em português
+        # Interface em PT-BR para o usuário
         print('Selecione uma das opções:\n1 - Adicionar\n2 - Listar\n3 - Remover\n4 - Sair')
 
         option = input('\nDigite uma opção: ')
+        # O validate_choice agora vai retornar 'add', 'list', etc., baseado no número digitado
         choice = validate_choice(options, option)
 
         if choice is None:
@@ -51,7 +52,6 @@ def main():
 
                 if not confirmation:
                     break    
-                
 
         elif choice == 'remove':
             while True:
@@ -93,9 +93,6 @@ def main():
                     print('\nRemoção cancelada.')
                     pause()
                     break
-                else:
-                    print('\nOpção inválida.')
-                    pause()   
                 
         elif choice == 'list':
             clear()
