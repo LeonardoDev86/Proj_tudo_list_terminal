@@ -3,7 +3,7 @@ import os
 
 #-------------------------AÇÕES----------------------------#
 
-def adicionar_tarefa(lista, tarefa): 
+def add_task(lista, tarefa): 
     tarefa = tarefa.strip()
 
     if not tarefa:
@@ -13,7 +13,7 @@ def adicionar_tarefa(lista, tarefa):
     return True
 
        
-def listar_tarefa(lista):
+def list_tasks(lista):
 
     if not lista:
         return False
@@ -21,7 +21,7 @@ def listar_tarefa(lista):
     return [f'{i} - {item}'for i,item in enumerate(lista, start = 1)]
         
 
-def remover_tarefa(lista, opcao_validada): 
+def remove_task(lista, opcao_validada): 
     
     if opcao_validada:
         lista.pop(opcao_validada - 1) # pop remove o índice da lista
@@ -31,7 +31,7 @@ def remover_tarefa(lista, opcao_validada):
 
 #---------------------PERSISTÊNCIA----------------------#
     
-def ler_tarefa():
+def read_tasks():
     try:
         with open('tarefas.json','r', encoding = 'utf-8') as t:
             return json.load(t)
@@ -40,13 +40,13 @@ def ler_tarefa():
 
 
    
-def salvar_tarefa(tarefas):
+def save_tasks(tarefas):
     with open('tarefas.json', 'w', encoding = 'utf-8') as t:
         json.dump(tarefas, t,indent = 4 ,ensure_ascii = False)
 
 #---------------------VALIDAÇÃO-------------------------#
 
-def validar_escolha(opcoes, opcao):
+def validate_choice(opcoes, opcao):
     try: 
         opcao = int(opcao)
         if 1 <= opcao <= len(opcoes):
@@ -58,7 +58,7 @@ def validar_escolha(opcoes, opcao):
     return None
     
 
-def validar_indice(lista,indice):
+def validate_index(lista,indice):
     try: 
         indice = int(indice)
         if 1 <= indice <= len(lista):
@@ -71,7 +71,7 @@ def validar_indice(lista,indice):
 
 
 
-def confirmar_acao(entrada): 
+def confirm_action(entrada): 
     entrada = entrada.strip().upper()
     if entrada == 'N':
         return False
@@ -83,18 +83,18 @@ def confirmar_acao(entrada):
 
 #--------------------INTERFACE--------------------#
       
-def pausar():
+def pause():
     entrada = input('\nPressione ENTER para continuar...')
 
         
 
 
-def titulo(texto):
+def title(texto):
     print('='*50)
     print(texto.center(50))
     print('='*50)
     print()
 
 
-def limpar():
+def clear():
     os.system('cls' if os.name =='nt' else 'clear')

@@ -1,39 +1,41 @@
 from todo_list.funcoes import (
-    validar_escolha, adicionar_tarefa,remover_tarefa,listar_tarefa,
-    pausar,titulo,ler_tarefa,salvar_tarefa,limpar,confirmar_acao,validar_indice
+    validate_choice, add_task, remove_task, list_tasks,
+    pause, title, read_tasks, save_tasks, clear, confirm_action, validate_index
 )
 
 def main():
-    tarefas = ler_tarefa()
-    opcoes = ['adicionar','listar','remover','sair']
+    tasks = read_tasks()
+    # As opções internas ficam em inglês para a lógica do backend
+    options = ['add', 'list', 'remove', 'exit']
 
     while True:
-        limpar()
-        titulo('GERENCIADOR DE TAREFAS')
+        clear()
+        title('GERENCIADOR DE TAREFAS')
 
+        # A interface que o usuário vê continua em português
         print('Selecione uma das opções:\n1 - Adicionar\n2 - Listar\n3 - Remover\n4 - Sair')
 
-        opcao = input('\nDigite uma opção: ')
-        escolha = validar_escolha(opcoes,opcao)
+        option = input('\nDigite uma opção: ')
+        choice = validate_choice(options, option)
 
-        if escolha is None:
-            print(f'[ERRO]: Selecione opções entre 1 e {len(opcoes)}')
-            pausar()
+        if choice is None:
+            print(f'[ERRO]: Selecione opções entre 1 e {len(options)}')
+            pause()
             continue
 
-        if escolha == 'sair':
+        if choice == 'exit':
             print('Obrigado por utilizar nosso sistema.')
             print('Sessão encerrada!\n')
             break
         
-        if escolha == 'adicionar':
+        if choice == 'add':
             while True:
-                limpar()
-                titulo('ADICIONAR TAREFA\n')
-                nova_tarefa = input('Digite a tarefa: ').strip()
+                clear()
+                title('ADICIONAR TAREFA\n')
+                new_task = input('Digite a tarefa: ').strip()
                 
-                if adicionar_tarefa(tarefas,nova_tarefa):
-                    salvar_tarefa(tarefas)
+                if add_task(tasks, new_task):
+                    save_tasks(tasks)
                     print('\nTarefa adicionada com sucesso!')   
                 else:
                     print('\nERRO: Nenhuma tarefa digitada.')
@@ -41,73 +43,71 @@ def main():
                 while True:    
                     resposta = input('\nDeseja adicionar mais tarefas? S/N: ').upper().strip()
 
-                    confirma = confirmar_acao(resposta)
-                    if confirma is not None:
+                    confirmation = confirm_action(resposta)
+                    if confirmation is not None:
                         break
 
                     print('\nPor favor digite "S" ou "N".')
 
-                if not confirma:
+                if not confirmation:
                     break    
                 
 
-        elif escolha == 'remover':
+        elif choice == 'remove':
             while True:
-                limpar()
-                titulo('REMOVER TAREFA')
-                itens = listar_tarefa(tarefas)
+                clear()
+                title('REMOVER TAREFA')
+                items = list_tasks(tasks)
 
-                if not itens:
-                    print('\nNenhuma tarefa à remover')
-                    pausar()
+                if not items:
+                    print('\nNenhuma tarefa para remover.')
+                    pause()
                     break
 
-                # Exibe a lista para o usuário se situar
-                for item in itens:
+                for item in items:
                     print(item)
  
-                indice = input('\nDigite o número da tarefa à remover ou "V" para voltar: ').strip().upper()
-                if indice == 'V':
+                index_input = input('\nDigite o número da tarefa para remover ou "V" para voltar: ').strip().upper()
+                if index_input == 'V':
                     break
 
-                ind = validar_indice(tarefas,indice)
-                if ind is None:
-                    print(f'\nERRO: Digite apenas números entre 1 e {len(tarefas)}') 
-                    pausar()
+                idx = validate_index(tasks, index_input)
+                if idx is None:
+                    print(f'\nERRO: Digite apenas números entre 1 e {len(tasks)}') 
+                    pause()
                     continue  
 
-                #------- Validação antes de remover a tarefa-------#
-                limpar()
-                print(f'\nTem certeza que deseja remover a tarefa "{tarefas[ind - 1]}"?')
+                clear()
+                print(f'\nTem certeza que deseja remover a tarefa "{tasks[idx - 1]}"?')
                 resposta = input('S/N: ').strip().upper()
-                confirma = confirmar_acao(resposta)
+                confirmation = confirm_action(resposta)
 
-                if confirma:
-                    remover_tarefa(tarefas,ind)
-                    salvar_tarefa(tarefas)
+                if confirmation:
+                    remove_task(tasks, idx)
+                    save_tasks(tasks)
                     print('\nTarefa removida com sucesso!')
-                    pausar()
+                    pause()
                     break
 
-                if confirma is False:
+                if confirmation is False:
                     print('\nRemoção cancelada.')
-                    pausar()
+                    pause()
                     break
                 else:
                     print('\nOpção inválida.')
-                    pausar()   
+                    pause()   
                 
-        elif escolha == 'listar':
-            limpar()
-            titulo('LISTA DE TAREFAS')
-            itens = listar_tarefa(tarefas)
-            if itens:
-                for item in itens:
+        elif choice == 'list':
+            clear()
+            title('LISTA DE TAREFAS')
+            items = list_tasks(tasks)
+            if items:
+                for item in items:
                     print(item)
             else:
-                print('\nNenhuma tarefa para listar')
+                print('\nNenhuma tarefa para listar.')
             
-            pausar()
+            pause()
 
 if __name__ == '__main__':
     main()
